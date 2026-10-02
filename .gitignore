@@ -1,0 +1,29 @@
+# Python environment and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+
+# IDEs and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Results and Logs (prevents uploading massive local text dumps)
+*.log
+results/
+baksheesh_lfa/results/
+gift_lfa/results/
+
+# Anonymity Safeguard (Strictly prevents accidentally committing PDFs or LaTeX files)
+*.pdf
+*.tex
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
