@@ -16,16 +16,28 @@ import time
 import statistics
 import sys, os
 
-BK_PATH = os.environ.get("BAKSHEESH_LFA_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "baksheesh_lfa"))
-GIFT_PATH = os.environ.get("GIFT_LFA_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "gift_lfa"))
+_script_dir = os.path.dirname(os.path.abspath(__file__))
+_parent_dir = os.path.abspath(os.path.join(_script_dir, ".."))
 
-for _p, _name in [(BK_PATH, "baksheesh_lfa"), (GIFT_PATH, "gift_lfa")]:
+def _find_path(env_var, candidate_names):
+    if env_var in os.environ and os.path.isdir(os.environ[env_var]):
+        return os.environ[env_var]
+    for c in candidate_names:
+        for base in [_parent_dir, _script_dir]:
+            p = os.path.join(base, c)
+            if os.path.isdir(p):
+                return p
+    return os.path.join(_parent_dir, candidate_names[0])
+
+BK_PATH = _find_path("BAKSHEESH_LFA_PATH", ["lfa_baksheesh", "baksheesh_lfa"])
+GIFT_PATH = _find_path("GIFT_LFA_PATH", ["lfa_gift", "gift_lfa"])
+
+for _p, _name in [(BK_PATH, "lfa_baksheesh"), (GIFT_PATH, "lfa_gift")]:
     if not os.path.isdir(_p):
         sys.exit(
             f"Couldn't find '{_name}' at {_p}.\n"
-            f"Put this script next to both the 'baksheesh_lfa' and 'gift_lfa' folders "
-            f"(unzip Baksheesh_LFA.zip and gift_lfa.zip alongside it), or set the "
-            f"BAKSHEESH_LFA_PATH / GIFT_LFA_PATH environment variables to their locations."
+            f"Put this script in the root alongside 'lfa_baksheesh' and 'lfa_gift' folders, "
+            f"or set the BAKSHEESH_LFA_PATH / GIFT_LFA_PATH environment variables."
         )
 
 sys.path.insert(0, BK_PATH)
